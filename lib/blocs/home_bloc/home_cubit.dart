@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes/blocs/bin_bloc/bin_cubit.dart';
 import 'package:notes/src/app_shared.dart';
 import 'package:notes/view/note_screen.dart';
 import '../../enums/home_view_enum.dart';
@@ -11,7 +12,7 @@ class HomeCubit extends Cubit<HomeStates> {
   HomeCubit() : super(HomeInitial());
   static HomeCubit get(context) => BlocProvider.of(context);
   int crossAxisCount = AppShared.localStorage.getInt('axisCount') ?? 2;
-  double childAspectRation =
+  double childAspectRatio =
       AppShared.localStorage.getDouble('childAspect') ?? 0.588;
   List<NoteModel> allNotes = [];
   List<NoteModel> selectedNotes = [];
@@ -32,7 +33,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(HomeSuccess());
   }
 
-  Future<void> deleteNote() async {
+  Future<void> deleteNote(context) async {
     emit(HomeInitial());
 
     for (var i = 0; i < selectedNotes.length; i++) {
@@ -41,6 +42,7 @@ class HomeCubit extends Cubit<HomeStates> {
           ['deleted', selectedNotes[i].noteId]);
     }
     toogleSelectionMode();
+    BinCubit.get(context).fetchBin();
     fetchNotes();
   }
 
@@ -83,10 +85,10 @@ class HomeCubit extends Cubit<HomeStates> {
   void toggleView(Enum newView) {
     switch (newView) {
       case HomeViewEnum.gridView:
-        childAspectRation = 0.588;
+        childAspectRatio = 0.588;
         crossAxisCount = 2;
       case HomeViewEnum.listView:
-        childAspectRation = 1.588;
+        childAspectRatio = 1.588;
         crossAxisCount = 1;
     }
     homeView = newView.toString();

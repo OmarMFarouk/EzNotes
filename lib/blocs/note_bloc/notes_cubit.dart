@@ -43,6 +43,32 @@ class NotesCubit extends Cubit<NotesStates> {
     });
   }
 
+  Future<void> updateNote(context, noteId) async {
+    emit(NotesInitial());
+    NoteModel note = NoteModel(
+        noteId: noteId,
+        dateModified: DateTime.now(),
+        fontSize: noteFS,
+        noteBody: noteCont.text,
+        noteTitle: titleCont.text);
+    await dbInstance!.rawQuery(
+        'UPDATE notes SET note_title = ? , note_body = ? , note_fontSize= ?, note_dateModified = ? WHERE note_id = ?',
+        [
+          note.noteTitle,
+          note.noteBody,
+          note.fontSize,
+          note.dateModified!.toIso8601String(),
+          note.noteId
+        ]).whenComplete(() {
+      emit(NotesAdded());
+      HomeCubit.get(context).fetchNotes();
+      noteCont.clear();
+      titleCont.clear();
+      redoStack.clear();
+      undoStack.clear();
+    });
+  }
+
   void changeTextSize({required bool willIncrease}) {
     if (willIncrease) {
       noteFS != 64 ? noteFS++ : null;

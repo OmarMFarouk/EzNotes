@@ -6,36 +6,46 @@ import 'package:notes/enums/home_view_enum.dart';
 import '../../src/app_colors.dart';
 import '../add_note_scren/buttons.dart';
 
-class HomeAppBar extends StatelessWidget {
+class HomeAppBar extends StatefulWidget {
   const HomeAppBar(
       {super.key,
       required this.selectionMode,
       required this.onCancel,
       required this.onDelete,
       required this.onSelectAll,
+      required this.onSearch,
       required this.selectedCount});
   final bool selectionMode;
   final VoidCallback onCancel, onDelete, onSelectAll;
   final int selectedCount;
+  final Function(String) onSearch;
 
+  @override
+  State<HomeAppBar> createState() => _HomeAppBarState();
+}
+
+class _HomeAppBarState extends State<HomeAppBar> {
+  bool searchMode = false;
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
       iconTheme: const IconThemeData(color: AppColors.titleText),
-      title: selectionMode
+      title: widget.selectionMode
           ? Row(
               children: [
-                AddNoteButton(onTap: onCancel, icon: Icons.cancel_outlined),
+                AddNoteButton(
+                    onTap: widget.onCancel, icon: Icons.cancel_outlined),
                 const Spacer(),
                 Text(
-                  '$selectedCount Selected',
+                  '${widget.selectedCount} Selected',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: AppColors.primary),
                 ),
                 const Spacer(),
-                AddNoteButton(onTap: onSelectAll, icon: Icons.select_all_sharp),
-                AddNoteButton(onTap: onDelete, icon: Icons.delete)
+                AddNoteButton(
+                    onTap: widget.onSelectAll, icon: Icons.select_all_sharp),
+                AddNoteButton(onTap: widget.onDelete, icon: Icons.delete)
               ],
             )
           : Row(
@@ -48,11 +58,51 @@ class HomeAppBar extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.search_outlined,
-                    )),
+                AnimatedContainer(
+                  width: searchMode
+                      ? MediaQuery.sizeOf(context).width * 0.4
+                      : MediaQuery.sizeOf(context).width * 0.1,
+                  curve: Curves.decelerate,
+                  duration: Durations.short4,
+                  child: searchMode
+                      ? TextField(
+                          onChanged: widget.onSearch,
+                          onSubmitted: (value) {
+                            setState(() {
+                              searchMode = !searchMode;
+                            });
+                          },
+                          cursorColor: AppColors.primary,
+                          style: const TextStyle(color: AppColors.titleText),
+                          decoration: InputDecoration(
+                              hintText: 'Search...',
+                              hintStyle: const TextStyle(
+                                  color: AppColors.subTitleText),
+                              filled: true,
+                              fillColor: AppColors.drawerBG,
+                              border: InputBorder.none,
+                              suffixIcon: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      searchMode = !searchMode;
+                                    });
+                                  },
+                                  child: const Icon(
+                                    Icons.search_off_outlined,
+                                    color: AppColors.subTitleText,
+                                    size: 25,
+                                  ))),
+                        )
+                      : IconButton(
+                          onPressed: () {
+                            setState(() {
+                              searchMode = !searchMode;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.search_outlined,
+                          )),
+                ),
                 IconButton(
                     onPressed: () => showMenu(
                             shape: RoundedRectangleBorder(

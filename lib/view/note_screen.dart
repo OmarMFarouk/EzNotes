@@ -73,7 +73,13 @@ class _NoteScreenState extends State<NoteScreen> {
           children: [
             AddNoteHeader(
                 controller: cubit.titleCont,
-                onSave: () => cubit.saveNote(context)),
+                onSave: () {
+                  if (widget.noteDetails != null) {
+                    cubit.updateNote(context, widget.noteDetails!.noteId);
+                  } else {
+                    cubit.saveNote(context);
+                  }
+                }),
             const Divider(
               thickness: 0.3,
             ),
