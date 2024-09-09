@@ -5,7 +5,6 @@ import 'package:notes/blocs/home_bloc/home_states.dart';
 import 'package:notes/components/home_screen/note_box.dart';
 import 'package:notes/components/home_screen/notes_builder.dart';
 import 'package:notes/src/app_colors.dart';
-import '../blocs/bin_bloc/bin_cubit.dart';
 import '../components/home_screen/appBar.dart';
 import '../components/general/drawer.dart';
 import '../components/home_screen/floatingAB.dart';
@@ -22,9 +21,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<BinCubit>(context).fetchBin();
-    });
     super.initState();
   }
 

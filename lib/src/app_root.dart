@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/blocs/bin_bloc/bin_cubit.dart';
 import 'package:notes/blocs/home_bloc/home_cubit.dart';
 import 'package:notes/blocs/note_bloc/notes_cubit.dart';
-import 'package:notes/view/home_screen.dart';
+import 'package:notes/view/splash_screen.dart';
 
 class AppRoot extends StatefulWidget {
   const AppRoot({super.key});
@@ -19,14 +19,14 @@ class _AppRootState extends State<AppRoot> {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => NotesCubit()),
-          BlocProvider(create: (context) => BinCubit()..fetchBin()),
-          BlocProvider(create: (context) => HomeCubit()..fetchNotes())
+          BlocProvider(create: (context) => BinCubit()),
+          BlocProvider(create: (context) => HomeCubit())
         ],
         child: MaterialApp(
           theme: ThemeData(fontFamily: 'Cairo'),
           title: 'Notes',
           debugShowCheckedModeBanner: false,
-          home: const HomeScreen(),
+          home: const SplashScreen(),
         ),
       ),
     );

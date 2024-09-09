@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../enums/note_view.dart';
@@ -10,14 +9,9 @@ import 'bin_states.dart';
 class BinCubit extends Cubit<BinStates> {
   BinCubit() : super(BinInitial());
   static BinCubit get(context) => BlocProvider.of(context);
-  TextEditingController titleCont = TextEditingController();
-  TextEditingController noteCont = TextEditingController();
-  final List<String> undoStack = [];
-  final List<String> redoStack = [];
   List<NoteModel> notesBin = [];
   List<NoteModel> selectedNotes = [];
   final dbInstance = AppDB.database;
-  int noteFS = 16;
   bool selectionEnabled = false;
   int crossAxisCount = AppShared.localStorage.getInt('axisCount') ?? 2;
   double childAspectRatio =
@@ -45,15 +39,6 @@ class BinCubit extends Cubit<BinStates> {
     }
     toogleSelectionMode();
     fetchBin();
-  }
-
-  void changeTextSize({required bool willIncrease}) {
-    if (willIncrease) {
-      noteFS != 64 ? noteFS++ : null;
-    } else {
-      noteFS != 16 ? noteFS-- : null;
-    }
-    refreshState();
   }
 
   void toogleSelectionMode() {

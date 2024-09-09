@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes/blocs/bin_bloc/bin_cubit.dart';
 
-import '../../blocs/home_bloc/home_cubit.dart';
 import '../../enums/note_view.dart';
 import '../../src/app_colors.dart';
 import '../add_note_scren/buttons.dart';
@@ -63,7 +62,7 @@ class BinAppBar extends StatelessWidget {
                             context: context,
                             items: [
                               CheckedPopupMenuItem(
-                                onTap: () => BlocProvider.of<HomeCubit>(context)
+                                onTap: () => BlocProvider.of<BinCubit>(context)
                                     .toogleSelectionMode(),
                                 padding: EdgeInsets.zero,
                                 child: const Text(
@@ -87,11 +86,11 @@ class BinAppBar extends StatelessWidget {
                                     context: context,
                                     items: [
                                       CheckedPopupMenuItem(
-                                        onTap: () => BlocProvider.of<HomeCubit>(
+                                        onTap: () => BlocProvider.of<BinCubit>(
                                                 context)
                                             .toggleView(NotesViewEnum.gridView),
                                         checked:
-                                            BlocProvider.of<HomeCubit>(context)
+                                            BlocProvider.of<BinCubit>(context)
                                                     .notesView ==
                                                 NotesViewEnum.gridView
                                                     .toString(),
@@ -104,12 +103,12 @@ class BinAppBar extends StatelessWidget {
                                         ),
                                       ),
                                       CheckedPopupMenuItem(
-                                        onTap: () => BlocProvider.of<HomeCubit>(
+                                        onTap: () => BlocProvider.of<BinCubit>(
                                                 context)
                                             .toggleView(NotesViewEnum.listView),
                                         padding: EdgeInsets.zero,
                                         checked:
-                                            BlocProvider.of<HomeCubit>(context)
+                                            BlocProvider.of<BinCubit>(context)
                                                     .notesView ==
                                                 NotesViewEnum.listView
                                                     .toString(),

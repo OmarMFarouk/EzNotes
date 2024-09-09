@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/blocs/bin_bloc/bin_cubit.dart';
 import 'package:notes/blocs/bin_bloc/bin_states.dart';
 import 'package:notes/components/bin_screen/appBar.dart';
-import 'package:notes/components/home_screen/note_box.dart';
 import 'package:notes/src/app_colors.dart';
 import '../components/general/drawer.dart';
 import '../components/home_screen/filter_tile.dart';
