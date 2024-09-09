@@ -1,0 +1,1 @@
+enum HomeViewEnum { gridView, listView }
