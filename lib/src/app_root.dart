@@ -5,8 +5,14 @@ import 'package:notes/blocs/home_bloc/home_cubit.dart';
 import 'package:notes/blocs/note_bloc/notes_cubit.dart';
 import 'package:notes/view/home_screen.dart';
 
-class AppRoot extends StatelessWidget {
+class AppRoot extends StatefulWidget {
   const AppRoot({super.key});
+
+  @override
+  State<AppRoot> createState() => _AppRootState();
+}
+
+class _AppRootState extends State<AppRoot> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

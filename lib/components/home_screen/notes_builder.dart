@@ -21,8 +21,8 @@ class NotesBuilder extends StatelessWidget {
             mainAxisSpacing: 50,
             crossAxisSpacing: 20),
         itemBuilder: (context, index) => NoteBox(
-            noteDetails: cubit.allNotes[index],
-            isSelected: cubit.selectedNotes.contains(cubit.allNotes[index]),
+            noteDetails: notesList[index],
+            isSelected: cubit.selectedNotes.contains(notesList[index]),
             onLongTap: () => cubit.toogleSelectionMode(),
             selectionMode: cubit.selectionEnabled,
             onTap: () => cubit.selectNote(context, index)));

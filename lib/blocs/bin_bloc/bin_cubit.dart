@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../enums/note_view.dart';
 import '../../models/note_model.dart';
 import '../../src/app_db.dart';
+import '../../src/app_shared.dart';
 import 'bin_states.dart';
 
 class BinCubit extends Cubit<BinStates> {
@@ -13,11 +15,14 @@ class BinCubit extends Cubit<BinStates> {
   final List<String> undoStack = [];
   final List<String> redoStack = [];
   List<NoteModel> notesBin = [];
-  List<NoteModel> selectedBin = [];
+  List<NoteModel> selectedNotes = [];
   final dbInstance = AppDB.database;
   int noteFS = 16;
   bool selectionEnabled = false;
-
+  int crossAxisCount = AppShared.localStorage.getInt('axisCount') ?? 2;
+  double childAspectRatio =
+      AppShared.localStorage.getDouble('childAspect') ?? 0.588;
+  String notesView = AppShared.localStorage.getString('noteView') ?? 'GridView';
   Future<void> fetchBin() async {
     emit(BinInitial());
     notesBin.clear();
@@ -34,9 +39,9 @@ class BinCubit extends Cubit<BinStates> {
   Future<void> deleteNote() async {
     emit(BinInitial());
 
-    for (var i = 0; i < selectedBin.length; i++) {
+    for (var i = 0; i < selectedNotes.length; i++) {
       dbInstance!.rawQuery(
-          'DELETE FROM notes WHERE note_id = ? ', [selectedBin[i].noteId]);
+          'DELETE FROM notes WHERE note_id = ? ', [selectedNotes[i].noteId]);
     }
     toogleSelectionMode();
     fetchBin();
@@ -53,29 +58,42 @@ class BinCubit extends Cubit<BinStates> {
 
   void toogleSelectionMode() {
     selectionEnabled = !selectionEnabled;
-    selectedBin.clear();
+    selectedNotes.clear();
     refreshState();
   }
 
   void selectNote(context, index) {
     if (selectionEnabled == true) {
-      if (selectedBin.contains(notesBin[index])) {
-        selectedBin.removeWhere((e) => e == notesBin[index]);
+      if (selectedNotes.contains(notesBin[index])) {
+        selectedNotes.removeWhere((e) => e == notesBin[index]);
       } else {
-        selectedBin.add(notesBin[index]);
+        selectedNotes.add(notesBin[index]);
       }
     }
     refreshState();
   }
 
   void selectAllBin() {
-    if (selectedBin.isEmpty) {
+    if (selectedNotes.isEmpty) {
       for (var i = 0; i < notesBin.length; i++) {
-        selectedBin.add(notesBin[i]);
+        selectedNotes.add(notesBin[i]);
       }
     } else {
-      selectedBin.clear();
+      selectedNotes.clear();
     }
+    refreshState();
+  }
+
+  void toggleView(Enum newView) {
+    switch (newView) {
+      case NotesViewEnum.gridView:
+        childAspectRatio = 0.588;
+        crossAxisCount = 2;
+      case NotesViewEnum.listView:
+        childAspectRatio = 1.588;
+        crossAxisCount = 1;
+    }
+    notesView = newView.toString();
     refreshState();
   }
 

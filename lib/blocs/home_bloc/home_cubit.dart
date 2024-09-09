@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/blocs/bin_bloc/bin_cubit.dart';
 import 'package:notes/src/app_shared.dart';
 import 'package:notes/view/note_screen.dart';
-import '../../enums/home_view_enum.dart';
+import '../../enums/note_view.dart';
 import '../../models/note_model.dart';
 import '../../src/app_db.dart';
 import 'home_states.dart';
@@ -18,7 +18,7 @@ class HomeCubit extends Cubit<HomeStates> {
   List<NoteModel> selectedNotes = [];
   final dbInstance = AppDB.database;
   bool selectionEnabled = false;
-  String homeView = AppShared.localStorage.getString('homeView') ?? 'GridView';
+  String notesView = AppShared.localStorage.getString('noteView') ?? 'GridView';
 
   Future<void> fetchNotes() async {
     emit(HomeInitial());
@@ -84,14 +84,14 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void toggleView(Enum newView) {
     switch (newView) {
-      case HomeViewEnum.gridView:
+      case NotesViewEnum.gridView:
         childAspectRatio = 0.588;
         crossAxisCount = 2;
-      case HomeViewEnum.listView:
+      case NotesViewEnum.listView:
         childAspectRatio = 1.588;
         crossAxisCount = 1;
     }
-    homeView = newView.toString();
+    notesView = newView.toString();
     refreshState();
   }
 

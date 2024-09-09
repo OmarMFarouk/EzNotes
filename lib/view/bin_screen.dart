@@ -7,6 +7,7 @@ import 'package:notes/components/home_screen/note_box.dart';
 import 'package:notes/src/app_colors.dart';
 import '../components/general/drawer.dart';
 import '../components/home_screen/filter_tile.dart';
+import '../components/home_screen/notes_builder.dart';
 
 class BinScreen extends StatefulWidget {
   const BinScreen({super.key});
@@ -27,7 +28,7 @@ class _BinScreenState extends State<BinScreen> {
               appBar: PreferredSize(
                   preferredSize: const Size(double.infinity, kToolbarHeight),
                   child: BinAppBar(
-                    selectedCount: cubit.selectedBin.length,
+                    selectedCount: cubit.selectedNotes.length,
                     onCancel: () => cubit.toogleSelectionMode(),
                     onDelete: () => cubit.deleteNote(),
                     onSelectAll: () => cubit.selectAllBin(),
@@ -53,25 +54,10 @@ class _BinScreenState extends State<BinScreen> {
                                   fontStyle: FontStyle.italic),
                             ),
                           )
-                        : GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            shrinkWrap: true,
-                            itemCount: cubit.notesBin.length,
-                            scrollDirection: Axis.vertical,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 2.5 / 4.25,
-                                    mainAxisSpacing: 50,
-                                    crossAxisSpacing: 20),
-                            itemBuilder: (context, index) => NoteBox(
-                                noteDetails: cubit.notesBin[index],
-                                isSelected: cubit.selectedBin
-                                    .contains(cubit.notesBin[index]),
-                                onLongTap: () => cubit.toogleSelectionMode(),
-                                selectionMode: cubit.selectionEnabled,
-                                onTap: () => cubit.selectNote(context, index)))
+                        : NotesBuilder(
+                            notesList: cubit.notesBin,
+                            cubit: cubit,
+                          )
                   ],
                 ),
               ));

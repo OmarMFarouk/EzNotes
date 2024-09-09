@@ -1,0 +1,1 @@
+enum NotesViewEnum { gridView, listView }

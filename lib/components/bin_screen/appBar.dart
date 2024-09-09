@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../blocs/home_bloc/home_cubit.dart';
+import '../../enums/note_view.dart';
 import '../../src/app_colors.dart';
 import '../add_note_scren/buttons.dart';
 
@@ -47,12 +50,85 @@ class BinAppBar extends StatelessWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.search_outlined,
-                    )),
-                IconButton(
-                    onPressed: () {},
+                    onPressed: () => showMenu(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            color: AppColors.subTitleText,
+                            position: RelativeRect.fromDirectional(
+                                textDirection: TextDirection.rtl,
+                                start: 0,
+                                top: 0,
+                                end: 1,
+                                bottom: 0),
+                            context: context,
+                            items: [
+                              CheckedPopupMenuItem(
+                                onTap: () => BlocProvider.of<HomeCubit>(context)
+                                    .toogleSelectionMode(),
+                                padding: EdgeInsets.zero,
+                                child: const Text(
+                                  'Edit',
+                                  style: TextStyle(
+                                      color: AppColors.titleText, fontSize: 18),
+                                ),
+                              ),
+                              CheckedPopupMenuItem(
+                                onTap: () => showMenu(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    color: AppColors.subTitleText,
+                                    position: RelativeRect.fromDirectional(
+                                        textDirection: TextDirection.rtl,
+                                        start: 0,
+                                        top: 0,
+                                        end: 1,
+                                        bottom: 0),
+                                    context: context,
+                                    items: [
+                                      CheckedPopupMenuItem(
+                                        onTap: () => BlocProvider.of<HomeCubit>(
+                                                context)
+                                            .toggleView(NotesViewEnum.gridView),
+                                        checked:
+                                            BlocProvider.of<HomeCubit>(context)
+                                                    .notesView ==
+                                                NotesViewEnum.gridView
+                                                    .toString(),
+                                        padding: EdgeInsets.zero,
+                                        child: const Text(
+                                          'Grid',
+                                          style: TextStyle(
+                                              color: AppColors.titleText,
+                                              fontSize: 18),
+                                        ),
+                                      ),
+                                      CheckedPopupMenuItem(
+                                        onTap: () => BlocProvider.of<HomeCubit>(
+                                                context)
+                                            .toggleView(NotesViewEnum.listView),
+                                        padding: EdgeInsets.zero,
+                                        checked:
+                                            BlocProvider.of<HomeCubit>(context)
+                                                    .notesView ==
+                                                NotesViewEnum.listView
+                                                    .toString(),
+                                        child: const Text(
+                                          'List',
+                                          style: TextStyle(
+                                              color: AppColors.titleText,
+                                              fontSize: 18),
+                                        ),
+                                      ),
+                                    ]),
+                                padding: EdgeInsets.zero,
+                                child: const Text(
+                                  'View',
+                                  style: TextStyle(
+                                      color: AppColors.titleText, fontSize: 18),
+                                ),
+                              ),
+                            ]),
                     icon: const Icon(
                       Icons.more_vert_outlined,
                     ))

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/blocs/home_bloc/home_cubit.dart';
-import 'package:notes/enums/home_view_enum.dart';
+import 'package:notes/enums/note_view.dart';
 
 import '../../src/app_colors.dart';
 import '../add_note_scren/buttons.dart';
@@ -143,11 +143,11 @@ class _HomeAppBarState extends State<HomeAppBar> {
                                       CheckedPopupMenuItem(
                                         onTap: () => BlocProvider.of<HomeCubit>(
                                                 context)
-                                            .toggleView(HomeViewEnum.gridView),
+                                            .toggleView(NotesViewEnum.gridView),
                                         checked:
                                             BlocProvider.of<HomeCubit>(context)
-                                                    .homeView ==
-                                                HomeViewEnum.gridView
+                                                    .notesView ==
+                                                NotesViewEnum.gridView
                                                     .toString(),
                                         padding: EdgeInsets.zero,
                                         child: const Text(
@@ -160,12 +160,12 @@ class _HomeAppBarState extends State<HomeAppBar> {
                                       CheckedPopupMenuItem(
                                         onTap: () => BlocProvider.of<HomeCubit>(
                                                 context)
-                                            .toggleView(HomeViewEnum.listView),
+                                            .toggleView(NotesViewEnum.listView),
                                         padding: EdgeInsets.zero,
                                         checked:
                                             BlocProvider.of<HomeCubit>(context)
-                                                    .homeView ==
-                                                HomeViewEnum.listView
+                                                    .notesView ==
+                                                NotesViewEnum.listView
                                                     .toString(),
                                         child: const Text(
                                           'List',
